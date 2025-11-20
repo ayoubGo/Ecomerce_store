@@ -20,7 +20,7 @@ const userShema = mongoose.Schema({
     },
     cardItems:[
         {
-            quantity :{
+            quantity:{
                 type: Number,
                 default: 1,
             },

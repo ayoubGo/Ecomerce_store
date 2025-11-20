@@ -2,6 +2,7 @@ import express, { json } from "express";
 import dotenv from "dotenv";
 import authRoutes from "./routes/auth.route.js"
 import productsRoutes from "./routes/products.route.js"
+import cartRoutes from "./routes/cart.route.js"
 import { connectDB } from "./lib/bd.js";
 import cookieParser from "cookie-parser";
 
@@ -16,6 +17,7 @@ app.use(cookieParser()); // so we can have access to the cookies
 
 app.use("/api/auth",authRoutes);
 app.use("/api/products",productsRoutes);
+app.use("/api/cart", cartRoutes);
 
 app.listen(5000, () => {
     console.log("server i running on http://localhost:" + PORT);
