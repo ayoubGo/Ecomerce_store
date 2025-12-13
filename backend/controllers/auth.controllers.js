@@ -30,7 +30,7 @@ const setCookies = async (res, accessToken, refreshToken) => {
     }),
 
     res.cookie("refreshToken", refreshToken,{
-        https : true,
+        httpOnly : true,
         secure : process.env.NODE_ENV === "production",
         sameSite : "strict",
         maxAge : 7 * 24 * 60 * 60 * 1000 // 7 days 
@@ -63,7 +63,8 @@ export const signup  = async (req ,res) => {
         const newUser = new User({
             name,
             email,
-            password : hashedPassword
+            password : hashedPassword,
+            role: user.role,
         })
 
         if(newUser){
@@ -110,7 +111,7 @@ export const login = async (req, res) => {
             return res.status(400).json({messsage : "Invalid credentials "});
         }
 
-        const {accessToken, refreshToken} = generateToken();
+        const {accessToken, refreshToken} = generateToken(user._id);
         
         await storeRefreshToken(user._id, refreshToken);
         await setCookies(res, accessToken, refreshToken);
@@ -119,6 +120,7 @@ export const login = async (req, res) => {
             _id : user._id, 
             name : user.name,
             email: user.email,
+            role: user.role,
         })
     }catch(error){
         console.log("Error in login controller");
@@ -128,7 +130,7 @@ export const login = async (req, res) => {
 
 export const logout = async (req, res) => {
     try{
-        const refreshToken = req.cookie?.refreshToken;
+        const refreshToken = req.cookies?.refreshToken;
         if(refreshToken){
             const decoded = jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET);
             await redis.del(`refresh_token:${decoded.userId}`);
