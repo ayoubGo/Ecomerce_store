@@ -34,7 +34,33 @@ export const useProductStore = create((set) => ({
         }
     },
 
-    deleteProducts: async (id) =>{},
+    deleteProducts: async (productId) =>{
+        set({loading : true});
+        try {
+            const res = await axiosInstanse.delete(`/products/${productId}`);
+            set((prevProduct) => ({
+                products:prevProduct.products.filter((product) => product._id != productId),
+                loading: false
+            }));
+        } catch (error) {
+            set({loading :false});
+            toast.error(error.response.data.error || "Failed to delete Product");
+        }
+    },
 
-    toggleFeaturedProduct : async (id) => {}
+    toggleFeaturedProduct : async (productId) => {
+        set({loading: true});
+        try {
+            const response = await axiosInstanse.get(`/products/${productId}`);
+            set((prevProducts) => ({
+                products: prevProducts.products.map((product) => 
+                    product._id === productId ? {...product, isFeatured: response.data.isFeatured} : product
+            ),
+            loading : false,
+            }));
+        } catch (error) {
+            set({loading: false});
+            toast.error(error.response.data.error || "Failed to update product");
+        }
+    }
 }));    

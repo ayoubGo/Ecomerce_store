@@ -5,7 +5,7 @@ import { useProductStore } from "../store/useProductStore.js";
 
 const categories = ["jeans", "t-shirts", "shoes", "glasses", "jackets", "suits", "bags"];
 
-const CreateProductForm = () => {
+const   CreateProductForm = () => {
 
     const [newProduct, setNewProduct] = useState({
         name : "",

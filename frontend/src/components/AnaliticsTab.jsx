@@ -1,10 +1,10 @@
-
+import {motion} from "framer-motion"; 
 
 const AnaliticsTab  = () => {
     return(
-        <div>
-            analitics
-        </div>
+        <motion.div className="">
+
+        </motion.div>
     )
 };
 export default AnaliticsTab;
