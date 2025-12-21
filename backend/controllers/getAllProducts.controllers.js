@@ -5,7 +5,7 @@ import Product from "../models/product.model.js"
 export const getAllProducts = async (req , res) => {
     try{
         const products = await Product.find({}) // we will get all the products 
-        req.json({products});
+        res.json({products});
     }catch(error){  
         console.log("Error in getAllProducts controller", error.message);
         res.status(500).json({message: "Server Error", error : error.message});
@@ -46,7 +46,7 @@ export const createProduct = async (req, res) => {
         let cloudinaryResponse = null;
 
         if(image){
-            cloudinaryResponse = cloudinary.uploader.upload(image, {folder: "products"});
+            cloudinaryResponse = await cloudinary.uploader.upload(image, {folder: "products"});
         }
 
         const product = await Product.create({
@@ -67,7 +67,7 @@ export const createProduct = async (req, res) => {
 
 export const deleteProduct = async (req, res) => {
     try {
-        const product = Product.findById(req.params.id);
+        const product = await Product.findById(req.params.id);
 
         if(!product){
             return res.status(404).json({message: "Product not found"});

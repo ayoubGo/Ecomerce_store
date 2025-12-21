@@ -1,19 +1,18 @@
 import {motion} from "framer-motion";
 import { Loader, PlusCircle, Upload } from "lucide-react";
 import { useState } from "react";
+import { useProductStore } from "../store/useProductStore.js";
 
 const categories = ["jeans", "t-shirts", "shoes", "glasses", "jackets", "suits", "bags"];
 
 const CreateProductForm = () => {
 
-    const loading = false;
-
     const [newProduct, setNewProduct] = useState({
         name : "",
         description : "",
-        price : "",
+        price: "",
         category: "",
-        image : ""
+        image: ""
     })
 
 
@@ -30,9 +29,16 @@ const CreateProductForm = () => {
 		}
     }
 
-    const handleSubmit = (e) => {
+    const {createProduct, loading} = useProductStore();
+
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log(newProduct);
+        try {
+            await createProduct(newProduct);
+            setNewProduct({name : "",description : "",price : "",category: "",image : ""});
+        } catch (error) {
+            console.log("Error in creating a product ");
+        }
     }
 
 
@@ -55,7 +61,7 @@ const CreateProductForm = () => {
                         value={newProduct.name}
                         onChange={(e) => setNewProduct({...newProduct, name:e.target.value})}
                         className="mt-1 block w-full bg-gray-700 border border-gray-600 rounded-md shadow-sm 
-                        py-2 px-3 text-white focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerland-500"
+                        py-2 px-3 text-white focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
                         required
                     />
                 </div>
