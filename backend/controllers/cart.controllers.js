@@ -2,10 +2,11 @@ import Product from "../models/product.model.js"
 
 export const addToCart = async (req, res) => {
     try {
+        console.log("req.user:", req.user);
         const {productId} = req.body;
         const user = req.user;
 
-        const existingItem = user.cartItems.find(item =>  item.id === productId);
+        const existingItem = user.cartItems.find((item) => item.id === productId);
         if(existingItem){
             existingItem.quantity += 1;
         }else{
