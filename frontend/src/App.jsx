@@ -5,7 +5,7 @@ import HomePage from "./pages/HomePage.jsx"
 import Navbar from "./components/Navbar.jsx"
 import { Toaster } from "react-hot-toast"
 import { useUserStore } from "./store/useUserStore.js"
-import { useEffect } from "react"
+import { use, useEffect } from "react"
 import LoadingSpinner from "./components/LoadingSpinner.jsx"
 import AdminPage from "./pages/AdminPage.jsx"
 import CategoryPage from "./pages/CategoryPage.jsx"
@@ -22,8 +22,9 @@ function App() {
   },[checkAuth]);
 
   useEffect(() => {
+    if(!user) return;
     getCartItems()
-  },[getCartItems]);
+  },[getCartItems, user]);
 
   if(checkingAuth){
     return <LoadingSpinner/>

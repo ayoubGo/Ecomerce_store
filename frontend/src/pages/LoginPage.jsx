@@ -14,7 +14,6 @@ const LoginPage = () => {
     const handleForm = (e) => {
         e.preventDefault();
         login(email, password);
-        console.log(user)
     }
     return(
         <div className="flex flex-col justify-center py-12 sm:px-6 lg:px-8">
