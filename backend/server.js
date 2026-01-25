@@ -21,9 +21,9 @@ app.use(cookieParser()); // so we can have access to the cookies
 app.use("/api/auth",authRoutes);
 app.use("/api/products",productsRoutes);
 app.use("/api/cart", cartRoutes);
-app.use("api/coupons", couponRoutes);
-app.use("api/payments", paymentRoutes);
-app.use("api/analytics", analyticsRoute);
+app.use("/api/coupons", couponRoutes);
+app.use("/api/payments", paymentRoutes);
+app.use("/api/analytics", analyticsRoute);
 
 app.listen(5000, () => {
     console.log("server i running on http://localhost:" + PORT);

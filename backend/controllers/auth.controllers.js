@@ -36,8 +36,7 @@ const setCookies = async (res, accessToken, refreshToken) => {
         maxAge : 7 * 24 * 60 * 60 * 1000 // 7 days 
     })
 
-}
-
+};
 
 export const signup  = async (req ,res) => {
     const {email , password, name } =  req.body;
@@ -64,7 +63,7 @@ export const signup  = async (req ,res) => {
             name,
             email,
             password : hashedPassword,
-            role: user.role,
+            role: "customer",
         })
 
         if(newUser){
@@ -179,7 +178,6 @@ export const refreshToken = async (req, res) => {
         res.status(500).json({message : "Server Error ", error: error.message});
     }
 }
-
 
 export const getProfile = async (req, res) => {
     try {
