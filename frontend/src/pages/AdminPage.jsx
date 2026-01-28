@@ -54,7 +54,7 @@ const AdminPage = () => {
 
             {activeTab === "create" && <CreateProductForm/>}
             {activeTab === "products" && <ProductsList/>}
-            {activeTab === "analitics" && <AnaliticsTab/>}
+            {activeTab === "analytics" && <AnaliticsTab/>}
         </div>
     )
 };

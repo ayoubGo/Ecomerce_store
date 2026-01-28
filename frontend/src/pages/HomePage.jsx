@@ -1,6 +1,16 @@
+import { useEffect } from "react";
 import CategoryItems from "../components/CategoryItems";
+import FeaturedProducts from "../components/FeaturedProducts.jsx";
+import {useProductStore}  from "../store/useProductStore.js"
 
 const  HomePage = () => {
+
+    const {loading , products, fetshFeaturedProducts} = useProductStore();
+
+    useEffect(() => {
+        fetshFeaturedProducts();
+    },[fetshFeaturedProducts]);
+
 
     const categories = [
 	{ href: "/jeans", name: "Jeans", imageUrl: "/jeans.jpg" },
@@ -26,6 +36,8 @@ const  HomePage = () => {
                         <CategoryItems category={category} key={category.name}/>
                     ))}
                 </div>
+
+                {!loading && products.length && <FeaturedProducts featuredProducts={products}/>}
             </div>
         </div>
     )
