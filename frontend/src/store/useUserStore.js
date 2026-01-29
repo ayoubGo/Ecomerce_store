@@ -3,6 +3,7 @@ import {create} from "zustand";
 import axiosInstanse from "../lib/axios.js";
 
 
+
 export  const useUserStore = create((set, get) => ({
 
     user: null,
@@ -56,8 +57,59 @@ export  const useUserStore = create((set, get) => ({
         } catch (error) {
             set({checkingAuth : false, user: null});
         }
+    },
+
+    refreshToken : async () => {
+        if(get().checkAuth()) return;
+
+        set({checkingAuth :false});
+        try {
+            const response = await axiosInstanse.post("/auth/refresh-token");
+            set({checkingAuth: false});
+            return response.data;
+        } catch (error) {
+            set({user :null ,checkingAuth: false});
+            throw error;
+        }
     }
 }))
 
 
 // todo : implement the axios interceptors for refreshing access token 
+
+// Axios interseptor for token refresh 
+
+let refreshPromise = null;
+
+axiosInstanse.interceptors.response.use(
+    (response) => response,
+    async (error) => {
+        const originalRequest = error.config;
+        if(error.response?.status === 401 && !originalRequest._retry){
+            originalRequest._retry = true;
+
+
+            try {
+
+                // if a refresh is already in progress , wait for it to complete
+                if(refreshPromise){
+                    await refreshPromise;
+                    return axiosInstanse(originalRequest);
+                }
+
+                // Start new refresh progress
+                refreshPromise = useUserStore.getState().refreshToken();
+                await refreshPromise;
+                refreshPromise = null;
+
+                return axiosInstanse(originalRequest);
+                
+            } catch (refreshError) {
+                // if refresh fails , redirect to login or handle as needed 
+                useUserStore.getState().logout();
+                return Promise.reject(refreshError);
+            }
+        }
+        return Promise.reject(error);
+    }
+);

@@ -6,14 +6,12 @@ import CartItem from "../components/CartItem.jsx";
 import PeopleAlsoBought from "../components/PeopleAlsoBought.jsx";
 import OrderSummary from "../components/OrderSummary.jsx";
 import GiftCouponCart from "../components/GiftCouponCart.jsx";
-import { useEffect } from "react";
+
 
 
 const CartPage = () => {
-    const {cart, } = useCartStore()
-    useEffect(() =>{
+    const {cart } = useCartStore()
 
-    },[])
     return (
         <div className="py-8 md:py-16">
             <div className=" mx-auto max-w-screen-xl px-4 2xl:px-0">

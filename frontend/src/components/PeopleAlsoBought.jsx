@@ -10,7 +10,6 @@ const PeopleAlsoBought = () => {
 
     const [recomendation , setRecomendation] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
-    console.log(recomendation);
 
 
 
